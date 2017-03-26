@@ -30,7 +30,7 @@ with open(training_file, mode='rb') as f:
     train = pickle.load(f)
 with open(testing_file, mode='rb') as f:
     test = pickle.load(f)
-    
+
 X_train, y_train = train['features'], train['labels']
 X_test, y_test = test['features'], test['labels']
 
@@ -44,9 +44,9 @@ print("Validation Set: {} samples".format(len(X_validation)))
 print("Test Set:       {} samples".format(len(X_test)))
 ```
 
-    
+
     Image Shape: (32, 32, 3)
-    
+
     Training Set:   27839 samples
     Validation Set: 6960 samples
     Test Set:       12630 samples
@@ -153,7 +153,7 @@ Use the code cell (or multiple code cells, if necessary) to implement the first 
 ### Preprocess the data here.
 ### Feel free to use as many code cells as needed.
 
-# Shuffle the data 
+# Shuffle the data
 from sklearn.utils import shuffle
 
 X_train, y_train = shuffle(X_train, y_train)
@@ -177,7 +177,7 @@ def LeNet(x):
     # Hyperparameters
     mu = 0
     sigma = 0.1
-    
+
     # TODO: Layer 1: Convolutional. Input = 32x32x3. Output = 28x28x6.
     # out_height = ceil(float(in_height - filter_height + 1) / float(strides[1]))
     # out_width  = ceil(float(in_width - filter_width + 1) / float(strides[2]))
@@ -199,7 +199,7 @@ def LeNet(x):
     conv2_W = tf.Variable(tf.truncated_normal(shape=(5, 5, 6, 16), mean = mu, stddev = sigma))
     conv2_b = tf.Variable(tf.zeros(16))
     conv2   = tf.nn.conv2d(conv1, conv2_W, strides=[1, 1, 1, 1], padding='VALID') + conv2_b
-    
+
     # SOLUTION: Activation.
     conv2 = tf.nn.relu(conv2)
 
@@ -210,12 +210,12 @@ def LeNet(x):
 
     # TODO: Flatten. Input = 5x5x16. Output = 400.
     fc0   = flatten(conv2)
-    
+
     # TODO: Layer 3: Fully Connected. Input = 400. Output = 120.
     fc1_W = tf.Variable(tf.truncated_normal(shape=(400, 120), mean = mu, stddev = sigma))
     fc1_b = tf.Variable(tf.zeros(120))
     fc1   = tf.matmul(fc0, fc1_W) + fc1_b
-    
+
     # TODO: Activation.
     fc1    = tf.nn.relu(fc1)
 
@@ -223,7 +223,7 @@ def LeNet(x):
     fc2_W  = tf.Variable(tf.truncated_normal(shape=(120, 84), mean = mu, stddev = sigma))
     fc2_b  = tf.Variable(tf.zeros(84))
     fc2    = tf.matmul(fc1, fc2_W) + fc2_b
-    
+
     # SOLUTION: Activation.
     fc2    = tf.nn.relu(fc2)
 
@@ -231,9 +231,9 @@ def LeNet(x):
     fc3_W  = tf.Variable(tf.truncated_normal(shape=(84, 43), mean = mu, stddev = sigma))
     fc3_b  = tf.Variable(tf.zeros(43))
     logits = tf.matmul(fc2, fc3_W) + fc3_b
-    
+
     print ('logits', logits)
-    
+
     return logits
 ```
 
@@ -284,7 +284,7 @@ def evaluate(X_data, y_data):
 with tf.Session() as sess:
     sess.run(tf.global_variables_initializer())
     num_examples = len(X_train)
-    
+
     print("Training...")
     print()
     for i in range(EPOCHS):
@@ -293,48 +293,48 @@ with tf.Session() as sess:
             end = offset + BATCH_SIZE
             batch_x, batch_y = X_train[offset:end], y_train[offset:end]
             sess.run(training_operation, feed_dict={x: batch_x, y: batch_y})
-            
+
         validation_accuracy = evaluate(X_validation, y_validation)
         print("EPOCH {} ...".format(i+1))
         print("Validation Accuracy = {:.3f}".format(validation_accuracy))
         print()
-        
+
     saver.save(sess, 'my_lenet')
     print("Model saved")
 ```
 
     Training...
-    
+
     EPOCH 1 ...
     Validation Accuracy = 0.656
-    
+
     EPOCH 2 ...
     Validation Accuracy = 0.823
-    
+
     EPOCH 3 ...
     Validation Accuracy = 0.888
-    
+
     EPOCH 4 ...
     Validation Accuracy = 0.910
-    
+
     EPOCH 5 ...
     Validation Accuracy = 0.924
-    
+
     EPOCH 6 ...
     Validation Accuracy = 0.942
-    
+
     EPOCH 7 ...
     Validation Accuracy = 0.951
-    
+
     EPOCH 8 ...
     Validation Accuracy = 0.949
-    
+
     EPOCH 9 ...
     Validation Accuracy = 0.951
-    
+
     EPOCH 10 ...
     Validation Accuracy = 0.955
-    
+
     Model saved
 
 
@@ -352,7 +352,7 @@ with tf.Session() as sess:
     Test Accuracy = 0.868
 
 
-### Question 1 
+### Question 1
 
 _Describe how you preprocessed the data. Why did you choose that technique?_
 
@@ -380,7 +380,7 @@ We use a 5-Layer Convolutional Networks (ConvNets) architecture, much like the L
 Layer 1 is a ConvNets C1, with Input = 32x32x3 and Output = 28x28x6. A ReLU is used for activation in this layer. The output of C1 is fed into Max Pooling with Input = 28x28x6 and Output = 14x14x6. The output of Layer 1 is fed into Layer 2
 
 Layer 2 is another ConvNets C2 with Input = 14X14X6 and Output = 10x10x16. A ReLU is used for activation in this layer. The output of C2 is fed into Max Pooling with Input = 10x10x16 and Output = 5x5x16. The output of Layer 2 is flattened with Input = 5x5x16 and Output = 400.The output of Layer 2 is fed into Layer 3.
- 
+
 Layer 3 is a fully connected neural network with Input = 400 and Output = 120. A ReLU is is used for activation in this layer. The output of Layer 3 is fed into a Layer 4.
 
 Layer 4 is also a fully connected neural network with Input = 120 and Output = 84. A ReLU is is used for activation in this layer. The output of Layer 4 is fed into a Layer 5.
@@ -408,19 +408,19 @@ Optimizer = ADAM
 _What approach did you take in coming up with a solution to this problem? It may have been a process of trial and error, in which case, outline the steps you took to get to the final solution and why you chose those steps. Perhaps your solution involved an already well known implementation or architecture. In this case, discuss why you think this is suitable for the current problem._
 
 **Answer:**
-I used LeNet-5 since it is a well known solution/implementation for recognizing visual patterns directly from pixel images with minimal preprocessing. 
+I used LeNet-5 since it is a well known solution/implementation for recognizing visual patterns directly from pixel images with minimal preprocessing.
 
 
-Please discuss how did you choose the optimzer. 
+Please discuss how did you choose the optimzer.
     I choose the ADAM optimizer. Let us begin with Gradient descent. From the Lesson: Gradient descent works by first calculating the slope of the plane at the current point, which includes calculating the partial derivatives of the loss with respect to all of the parameters. This set of partial derivatives is called the gradient. Then it uses the gradient to modify the weights such that the next forward pass through the network moves the output lower in the hyperplane. Physically, this would be the same as measuring the slope of the valley at the location of the ball, and then moving the ball a small amount in the direction of the slope. Over time, it's possible to find the bottom of the valley with many small movements.We need to find a path that takes us to the optimum gradient descent is the most popular way to find the optimum. An improvement on gradient descent is the stochastic gradient descentn(SGD). Again from the Lesson: Stochastic Gradient Descent (SGD) is a version of Gradient Descent where on each forward pass a batch of data is randomly sampled from total dataset. Remember when we talked about the batch size earlier? That's the size of the batch. Ideally, the entire dataset would be fed into the neural network on each forward pass, but in practice, it's not practical due to memory constraints. SGD is an approximation of Gradient Descent, the more batches processed by the neural network, the better the approximation. ADAM is an improvement ofver SGD. In ADAM the gradient used in each iteration is updated from the previous using a technique based in momenta.
-    
+
 Please discuss how did you tell a convolutional layer is well suited for this problem.
-    Convolution layers is well suited for this problem becasue we know we are working with images.  Each layer might capture a different level in the hierarchy of objects. It allows us to hrecognize basic lines and curves, then shapes and blobs, and then increasingly complex objects within the image. Finally, the CNN classifies the image by combining the larger, more complex objects. 
-    
-Please discuss how did you choose the particular activation. 
+    Convolution layers is well suited for this problem becasue we know we are working with images.  Each layer might capture a different level in the hierarchy of objects. It allows us to hrecognize basic lines and curves, then shapes and blobs, and then increasingly complex objects within the image. Finally, the CNN classifies the image by combining the larger, more complex objects.
+
+Please discuss how did you choose the particular activation.
     We choose ReLUs for activation becasue of their simplicity. One, RELUs have nice derivates, that is, it is the derivative is constant when x > 0. It reduces the liklihood of the gadient to vanish. Two, ReLUs are sparse. Sparsity arises when x <= 0. The more such units that exist in a layer the more sparse the resulting representation.
 
-Please discuss how did yotune the hyperparameter. 
+Please discuss how did yotune the hyperparameter.
     I experiments with the hyperparameters. For example, when I changed the learning rate I could check the accuracy and see if it is improving or deterorating or not. Similarly, I could change the EPOCHS and batch size to see its affects.
 
 
@@ -467,7 +467,7 @@ with tf.Session() as sess:
 
     test_accuracy = evaluate(X_processed_images_NP, y_processed_images_NP)
     print("Test Accuracy = {:.3f}".format(test_accuracy))
-    
+
     softmax = tf.nn.softmax(logits)
     probs = sess.run(softmax, feed_dict={x: X_processed_images_NP, y: y_processed_images_NP})
     #print (probs)
@@ -640,10 +640,15 @@ _Choose five candidate images of traffic signs and provide them in the report. A
 Above, x is the image I found on the web. y is my best guess based on the signnames.csv file. model is model's prediction. Couple of the test cases (uturn and slow) are unique in that they were not similar to any image in the training set which would make their classification difficult. Following are some more reasons that the classification would be difficult:
 
 1.The Contrast of the image.
+
 2.The Angle of the traffic sign.
+
 3.Image might be jittered.
+
 4.The training data set does not include this traffic sign.
+
 5.Background Objects.
+
 5.Lighting
 
 
@@ -655,13 +660,13 @@ _**NOTE:** You could check the accuracy manually by using `signnames.csv` (same 
 
 
 **Answer:**
-The testing accuracy was over 85%, but the model perdicted was 20% (1 out of 5).
+The testing accuracy was over 85%, but the model predicted 20% (1 out of 5).
 
 ### Question 8
 
 *Use the model's softmax probabilities to visualize the **certainty** of its predictions, [`tf.nn.top_k`](https://www.tensorflow.org/versions/r0.12/api_docs/python/nn.html#top_k) could prove helpful here. Which predictions is the model certain of? Uncertain? If the model was incorrect in its initial prediction, does the correct prediction appear in the top k? (k should be 5 at most)*
 
-`tf.nn.top_k` will return the values and indices (class ids) of the top k predictions. So if k=3, for each sign, it'll return the 3 largest probabilities (out of a possible 43) and the correspoding class ids.
+`tf.nn.top_k` will return the values and indices (class ids) of the top k predictions. So if k=3, for each sign, it'll return the 3 largest probabilities (out of a possible 43) and the corresponding class ids.
 
 Take this numpy array as an example:
 
@@ -698,9 +703,9 @@ Looking just at the first row we get `[ 0.34763842,  0.24879643,  0.12789202]`, 
 **Answer:**
 The model was very certain (94% or higher) but the predicted only 20% correctly. One reason for such large discrepancy is the the German signs were used for training and validation whereas the 5 test cases were based on American signs.
 
-I choose k=1 (althought I experimented with other k's) becasue then I could easily use the index as the predicted class id and compare it to signnames.csv. Also, then I was able to easily plot the images.
+I choose k=1 (although I experimented with other k's) because then I could easily use the index as the predicted class id and compare it to signnames.csv. Also, then I was able to easily plot the images.
 
-Also,I realize I can should refactor my code and streamline it, but I am lazy :-) !
+Also,I realize I can should re-factor my code and streamline it, but I am lazy :-) !
 
 > **Note**: Once you have completed all of the code implementations and successfully answered each question above, you may finalize your work by exporting the iPython Notebook as an HTML document. You can do this by using the menu above and navigating to  \n",
     "**File -> Download as -> HTML (.html)**. Include the finished document along with this notebook as your submission.
