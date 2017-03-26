@@ -701,7 +701,7 @@ TopKV2(values=array([[ 0.34763842,  0.24879643,  0.12789202],
 Looking just at the first row we get `[ 0.34763842,  0.24879643,  0.12789202]`, you can confirm these are the 3 largest probabilities in `a`. You'll also notice `[3, 0, 5]` are the corresponding indices.
 
 **Answer:**
-The model was very certain (94% or higher) but the predicted only 20% correctly. One reason for such large discrepancy is the the German signs were used for training and validation whereas the 5 test cases were based on American signs.
+The model was very certain (94% or higher) but predicted only 20% correctly. One reason for such large discrepancy is the the German signs were used for training and validation whereas the 5 test cases were based on American signs.
 
 I choose k=1 (although I experimented with other k's) because then I could easily use the index as the predicted class id and compare it to signnames.csv. Also, then I was able to easily plot the images.
 
